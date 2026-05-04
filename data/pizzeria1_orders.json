@@ -1,0 +1,15 @@
+{
+  "orders": [
+    {
+      "id": 1,
+      "customer_id": 1,
+      "items": []
+    },
+    {
+      "id": 2,
+      "customer_id": 2,
+      "items": []
+    }
+  ],
+  "next_order_id": 3
+}

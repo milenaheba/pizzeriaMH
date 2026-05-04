@@ -1,0 +1,20 @@
+{
+  "customers": [
+    {
+      "id": 1,
+      "name": "Jan Kowalski",
+      "phone": "999-888-777"
+    },
+    {
+      "id": 2,
+      "name": "Piotr Nowak",
+      "phone": "222-333-444"
+    },
+    {
+      "id": 3,
+      "name": "Anna Wi\u015bniewska",
+      "phone": "333-444-555"
+    }
+  ],
+  "next_customer_id": 4
+}
