@@ -1,10 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Pizzeria MH</title>
+  <style>
+    body {
+      font-family: Arial;
+      margin: 40px;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      color: #c0392b;
+    }
+
+    ul {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .delete {
+      color: red;
+      margin-left: 10px;
+    }
+  </style>
 </head>
 <body>
-$END$
+
+<h1>🍕 Pizzeria MH</h1>
+
+<a href="{% url 'create_order' %}">Złóż zamówienie</a>
+
+<h2>Menu</h2>
+<ul>
+  {% for pizza in pizzas %}
+    <li>{{ pizza.name }} — {{ pizza.price }} zł</li>
+  {% empty %}
+    <li>Brak pizz w menu.</li>
+  {% endfor %}
+</ul>
+
+<h2>Ostatnie zamówienia</h2>
+<ul>
+  {% for order in orders %}
+    <li>
+      {{ order.customer.name }} ({{ order.get_size_display }}):
+      {% for pizza in order.pizzas.all %}
+        {{ pizza.name }}{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+
+      <a href="{% url 'delete_order' order.id %}" class="delete">
+        ❌ usuń
+      </a>
+    </li>
+  {% empty %}
+    <li>Brak zamówień.</li>
+  {% endfor %}
+</ul>
+
 </body>
 </html>

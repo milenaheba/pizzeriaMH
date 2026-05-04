@@ -1,10 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+  <title>Nowe zamówienie</title>
+  <style>
+    body {
+      font-family: Arial;
+      margin: 40px;
+      background: #f5f5f5;
+    }
+
+    h1 {
+      color: #c0392b;
+    }
+
+    form {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background: #c0392b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 15px;
+    }
+  </style>
 </head>
 <body>
-$END$
+
+<h1>🍕 Nowe zamówienie</h1>
+
+<form method="post">
+  {% csrf_token %}
+
+  <label>Imię klienta:</label><br>
+  <input type="text" name="customer_name" required><br><br>
+
+  <label>Rozmiar:</label><br>
+ <select name="size">
+  <option value="S">Mała (cena bazowa)</option>
+  <option value="M" selected>Średnia (+5 zł)</option>
+  <option value="L">Duża (+10 zł)</option>
+</select><br><br>
+
+<p><small>Dopłata za rozmiar dotyczy każdej wybranej pizzy</small></p>
+
+  <label>Wybierz pizzę:</label><br>
+
+{% for pizza in pizzas %}
+  <label>
+    <input type="checkbox" name="pizzas" value="{{ pizza.id }}" data-price="{{ pizza.price }}">
+    {{ pizza.name }} — {{ pizza.price }} zł
+  </label><br>
+{% endfor %}
+
+<p><strong>Razem: <span id="total">0</span> zł</strong></p>
+
+<br>
+<button type="submit">Zamów</button>
+</form>
+
+
+<a href="{% url 'home' %}">← Powrót</a>
+
+<script>
+function calculateTotal() {
+    let total = 0;
+    let size = document.querySelector("select[name='size']").value;
+
+    let sizeExtra = {
+        "S": 0,
+        "M": 5,
+        "L": 10
+    };
+
+    let pizzas = document.querySelectorAll("input[name='pizzas']:checked");
+
+    pizzas.forEach(pizza => {
+        let price = parseFloat(pizza.dataset.price);
+        total += price + sizeExtra[size];
+    });
+
+    document.getElementById("total").innerText = total.toFixed(2);
+}
+
+document.querySelectorAll("input[name='pizzas']").forEach(el => {
+    el.addEventListener("change", calculateTotal);
+});
+
+document.querySelector("select[name='size']").addEventListener("change", calculateTotal);
+</script>
+
 </body>
 </html>
